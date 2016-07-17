@@ -1,0 +1,21 @@
+extends ./layout
+
+block content
+    .jumbotron
+        h1 API Project: URL Shortener
+        p.lead.
+            This is a simple microservice project for Free Code Camp. You can 
+            can pass a URL as a parameter and I will receive a shortened URL 
+            in the JSON response
+        p   Try it out:
+            form
+                .form-group
+                    label(for=urlInput) URL
+                    input.form-control(type="text", v-model="url")
+                button.btn.btn-primary(type="submit", @click.prevent="createUrl") Shorten!
+    .row: .col-xs-12
+        h2 Example Usage:
+        p: code https://cgw-tinyurl.herokuapp.com/new/http://google.com
+        p: code https://cgw-tinyurl.herokuapp.com/new/http://bar.foo
+        h2 Example Output:
+        p: code { "original_url": "http://google.com", "short_url": "https://cgw-tinyurl.herokuapp.com/a5BiO" }
