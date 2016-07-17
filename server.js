@@ -1,22 +1,23 @@
 var express = require('express')
 var app = express()
 var pug = require('pug')
-var logger = require('morgan')
-var shortenUrl = require('./shortenUrl')
-var getUrl = require('./getUrl')
-var encodeUrl = require('./encodeUrl')
+
+var shortenURL = require('./shortenURL')
+var redirectURL = require('./redirectURL')
+var parseURL = require('./parseURL')
 
 app.set('view engine', 'pug')
 
-app.use(logger('combined', { kip: (req, res) => { return res.statusCode < 400 } }))
 app.use('/static', express.static(__dirname + '/static'))
-app.use(encodeUrl())
 
-app.get('/new/:inputUrl', shortenUrl)
-app.get('/:url', getUrl)
-app.get('/', (req, res) => { res.render('index') })
+app.use(parseURL())
+app.get('/', (req, res) => { 
+	res.render('index') 
+})
+app.get('/new/:inputUrl', shortenURL)
 
+app.get(/[A-Za-z0-9]{5}/, redirectURL)
 
-app.listen(process.env.PORT, function () {
-  console.log('App listening on port '+process.env.PORT+'!');
+app.listen(process.env.PORT || 3000, function () {
+  console.log('App listening on port '+(process.env.PORT || 3000)+'!');
 });
