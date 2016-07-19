@@ -1,13 +1,15 @@
+'use strict'
+
 var parseUrl = require('url-parse')
 var JsonDB = require('node-json-db')
 var db = new JsonDB("data", true, false)
 
-module.exports = shortenUrl
+module.exports = shortenURL
 
-function shortenUrl () {
+function shortenURL () {
   var data = db.getData('/')
 
-  return (req, res) => {
+  return function (req, res) {
     // decode the encoded url
     var inputUrl = decodeURIComponent(req.params.inputUrl)
 
@@ -57,9 +59,12 @@ function shortenUrl () {
     {
       var id
       var notSecure = true 
-      while(notSecure) {
+      var x = 0;
+      while(notSecure || x >= 10) {
         id = makeId()
+        console.log(id, hasId(id))
         if (!hasId(id)) notSecure = false
+        x++
       }
       return id
     }
@@ -74,7 +79,7 @@ function shortenUrl () {
 
     function searchData() {
       var index = -1
-      data.url.forEach(function(val, i) {
+      data.urls.forEach(function(val, i) {
         if (val.original_url === req.params.inputUrl)
           index = i
       })
