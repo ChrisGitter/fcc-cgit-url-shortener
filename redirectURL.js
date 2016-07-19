@@ -10,17 +10,29 @@ module.exports = redirectURL
 */
 
 function redirectURL () {
-var data = db.getData('/')
-var redirect = ''
+    var data = db.getData('/')
+    var redirect = ''
+    var matched = false
+    var err = false
+
     return (req, res) => {
         if (typeof data.urls == 'undefined' || !Array.isArray(data.urls)) {
             // no data yet, return error
-            return res.send('Error, requested URL not found!')
+            err = 'Error, requested URL not found!'
         }
-        data.urls.forEach(function(val) {
-            // if we found the right dataset, just redirect
-            if (req.url === val.short_url)
-                window.location = val.original_url
-        })
+        if (!err) {
+            data.urls.forEach(function(val) {
+                // if we found the right dataset, just redirect
+                if (req.url.slice(1) === val.short_url) {
+                    matched = true
+                    res.redirect(val.original_url)
+                }
+            })
+            if (!matched) err = 'Error, requested URL not found!' 
+        } 
+        if (err) {
+            res.send('Requested URL not found, please try again.')
+            throw err
+        }
     }
 }

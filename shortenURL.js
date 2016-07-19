@@ -12,7 +12,6 @@ function shortenURL () {
   return function (req, res) {
     // decode the encoded url
     var inputUrl = decodeURIComponent(req.params.inputUrl)
-
     // if database is empty, create a new array
     if (typeof data.urls == 'undefined' || !Array.isArray(data.urls)) {
       data = {urls: []}
@@ -60,9 +59,8 @@ function shortenURL () {
       var id
       var notSecure = true 
       var x = 0;
-      while(notSecure || x >= 10) {
+      while(notSecure || x >= 100) {
         id = makeId()
-        console.log(id, hasId(id))
         if (!hasId(id)) notSecure = false
         x++
       }
