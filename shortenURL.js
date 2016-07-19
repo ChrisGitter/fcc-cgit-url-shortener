@@ -1,5 +1,3 @@
-'use strict'
-
 var parseUrl = require('url-parse')
 var JsonDB = require('node-json-db')
 var db = new JsonDB("data", true, false)
@@ -20,7 +18,7 @@ function shortenURL () {
     var searchIndex = searchData()
     if (searchIndex !== -1) {
       // url already shortened
-      res.json({original_url : data.urls[searchIndex].original_url, short_url: data.urls[searchIndex].short_url})
+      res.json({original_url : data.urls[searchIndex].original_url, short_url: req.protocol + '://' + req.hostname + '/' + data.urls[searchIndex].short_url})
     } else {
       // url is new
 
@@ -40,7 +38,7 @@ function shortenURL () {
       // if data object is over 9000 -> delete first item
       if (data.urls.length > 9000) data.urls.shift()
       db.push('/', data)
-      res.json({original_url: newObj.original_url, short_url: req.hostname + '/' + newObj.short_url})
+      res.json({original_url: newObj.original_url, short_url: req.protocol + '://' + req.hostname + '/' + newObj.short_url})
     }
 
     function makeId()
