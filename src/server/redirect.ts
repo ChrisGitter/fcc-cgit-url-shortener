@@ -12,7 +12,7 @@ const notFound = (res: Response) => res.status(404).send("Sorry, not found :(");
 
 const redirect: RequestHandler = (req, res) => {
   const data: Data.DB = db.getData("/");
-  const shortUrl = req.path.split("/")[0];
+  const shortUrl = req.path.split("/")[1];
 
   if (
     typeof data.urls == "undefined" ||
