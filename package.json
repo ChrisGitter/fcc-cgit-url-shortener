@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "10.14.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "yarn build && node ./build/server/main.js",
+    "postinstall": "yarn build",
+    "start": "node ./build/server/main.js",
     "typecheck": "tsc",
     "dev": "babel-node src/main.ts -x \".ts\"",
     "build": "yarn build-server && yarn build-static",
