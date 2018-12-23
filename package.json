@@ -5,7 +5,14 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "yarn build && node ./build/server/main.js",
+    "typecheck": "tsc",
+    "dev": "babel-node src/main.ts -x \".ts\"",
+    "build": "yarn build-server && yarn build-static",
+    "setup-server": "rimraf ./build/server && mkdirp ./build/server",
+    "setup-static": "rimraf ./build/static && mkdirp ./build/static",
+    "build-server": "yarn setup-server && babel src/server -x \".ts\" -d ./build/server",
+    "build-static": "yarn setup-static && babel ./src/client/app.ts -x \".ts\" --config-file ./src/client/static.babel.js -o ./build/static/app.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +25,24 @@
   },
   "homepage": "https://github.com/ChrisGitter/urlShortener#readme",
   "dependencies": {
-    "express": "^4.14.0",
-    "node-json-db": "^0.7.2",
-    "pug": "^2.0.0-beta3",
-    "url-parse": "^1.1.1"
+    "express": "^4.16.4",
+    "node-json-db": "^0.9.2",
+    "pug": "^2.0.3",
+    "shortid": "^2.2.14"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-typescript": "^7.1.0",
+    "@types/express": "^4.16.0",
+    "@types/node-json-db": "^0.0.1",
+    "@types/shortid": "^0.0.29",
+    "@types/url-parse": "^1.4.1",
+    "@types/vue": "^2.0.0",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.2",
+    "typescript": "^3.2.2"
   }
 }
